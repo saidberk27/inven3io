@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
+import 'package:inven3io/data/authentication.dart';
 import 'package:video_player/video_player.dart';
 
 void main() => runApp(const LoginScreen());
@@ -99,9 +100,14 @@ class FormSection extends StatelessWidget {
           children: [
             LoginPageButtons(
               buttonText: "Üye Ol",
+              buttonFunction: () {
+                signInWithEmailAndPassword(
+                    emailAddress: "csaidberk@gmail.com", password: "dxdiag27?");
+              },
             ),
             LoginPageButtons(
               buttonText: "Giriş Yap",
+              buttonFunction: () {},
             ),
           ],
         ),
@@ -112,12 +118,14 @@ class FormSection extends StatelessWidget {
 
 class LoginPageButtons extends StatelessWidget {
   late String buttonText;
-  LoginPageButtons({super.key, required this.buttonText});
+  late void Function()? buttonFunction;
+  LoginPageButtons(
+      {super.key, required this.buttonText, required this.buttonFunction});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: buttonFunction,
       style: ElevatedButton.styleFrom(
         elevation: 5,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -186,4 +194,14 @@ class VideoSection extends StatelessWidget {
           : Container(),
     );
   }
+}
+
+Future<dynamic> signInWithEmailAndPassword(
+    {required String emailAddress, required String password}) async {
+  print("Signing In...");
+  Authentication authentication =
+      Authentication(emailAddress: emailAddress, password: password);
+
+  dynamic result = await authentication.signInWithEmailAndPassword();
+  print(result);
 }

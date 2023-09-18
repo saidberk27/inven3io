@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "505473993862",
+    "project_id": "inven3os",
+    "storage_bucket": "inven3os.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505473993862:android:0df94225b0d526189b1507",
+        "android_client_info": {
+          "package_name": "com.example.inven3io"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcuI4Jo0yK0zM9Vixv0GVWD61n_vPBZLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
