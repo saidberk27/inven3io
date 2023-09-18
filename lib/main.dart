@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inven3io/core/login/screens/login_screen.dart';
 import 'config/themes/main_theme.dart';
 
 void main() {
@@ -12,16 +13,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: MainTheme.themeData,
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () => {}),
-        appBar: AppBar(),
-        body: Center(
-          child: Text(
-            'Hello World!',
-            style: MainTheme.themeData.textTheme.displayMedium,
-          ),
-        ),
-      ),
+      home: const LoginScreen(),
     );
   }
 }

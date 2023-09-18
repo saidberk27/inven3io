@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  video_player: ^2.7.1
 
 dev_dependencies:
   flutter_test:
@@ -17,7 +18,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
   fonts:
     - family: MainFont
       fonts:
-        - asset: lib/assets/fonts/BreeSerif.ttf
+        - asset: assets/fonts/BreeSerif.ttf
