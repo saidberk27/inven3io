@@ -17,6 +17,7 @@ class Authentication {
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        debugPrint("Kullanıcı");
         return 'Kullanıcı Bulunamadı';
       } else if (e.code == 'wrong-password') {
         return 'Yanlış Şifre';

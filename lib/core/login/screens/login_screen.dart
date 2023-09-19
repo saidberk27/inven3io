@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
+import 'package:inven3io/core/login/models/user.dart';
 import 'package:inven3io/data/authentication.dart';
 import 'package:video_player/video_player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const LoginScreen());
 
@@ -71,7 +73,7 @@ class LogoAndFormSection extends StatelessWidget {
             border: Border.all(color: MainTheme.secondaryColor, width: 4)),
         child: SingleChildScrollView(
           child: Column(
-            children: [Image.asset(imageAssetString), const FormSection()],
+            children: [Image.asset(imageAssetString), FormSection()],
           ),
         ),
       ),
@@ -79,39 +81,73 @@ class LogoAndFormSection extends StatelessWidget {
   }
 }
 
-class FormSection extends StatelessWidget {
-  const FormSection({
+class FormSection extends StatefulWidget {
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  FormSection({
     super.key,
   });
 
   @override
+  State<FormSection> createState() => _FormSectionState();
+}
+
+class _FormSectionState extends State<FormSection> {
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomTextInput(
-          placeholder: "E - Posta",
-        ),
-        const SizedBox(height: 10),
-        CustomTextInput(
-          placeholder: "Şifre",
-        ),
-        const SizedBox(height: 10),
-        ButtonBar(
-          children: [
-            LoginPageButtons(
-              buttonText: "Üye Ol",
-              buttonFunction: () {
-                signInWithEmailAndPassword(
-                    emailAddress: "csaidberk@gmail.com", password: "dxdiag27?");
-              },
-            ),
-            LoginPageButtons(
-              buttonText: "Giriş Yap",
-              buttonFunction: () {},
-            ),
-          ],
-        ),
-      ],
+    return Form(
+      key: FormSection._formKey,
+      child: Column(
+        children: [
+          CustomTextInput(
+            placeholder: "E - Posta",
+            controller: _mailController,
+          ),
+          const SizedBox(height: 10),
+          CustomTextInput(
+            placeholder: "Şifre",
+            controller: _passwordController,
+            isPassword: true,
+          ),
+          const SizedBox(height: 10),
+          ButtonBar(
+            children: [
+              LoginPageButtons(
+                buttonText: "Üye Ol",
+                buttonFunction: () {},
+              ),
+              LoginPageButtons(
+                buttonText: "Giriş Yap",
+                buttonFunction: () async {
+                  FormState formState = FormSection._formKey.currentState!;
+
+                  if (formState.validate()) {
+                    String emailAddress = _mailController.text;
+                    String password = _passwordController.text;
+
+                    try {
+                      // Sign in the user with the given email address and password.
+                      if (await signInWithEmailAndPassword(
+                          emailAddress: emailAddress,
+                          password: password,
+                          context: context)) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      }
+                    } on Exception catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -142,13 +178,23 @@ class LoginPageButtons extends StatelessWidget {
   }
 }
 
-class CustomTextInput extends StatelessWidget {
-  late String placeholder;
-  CustomTextInput({
-    super.key,
-    required this.placeholder,
-  });
+class CustomTextInput extends StatefulWidget {
+  final String placeholder;
+  final TextEditingController controller;
+  final bool? isPassword;
 
+  CustomTextInput({
+    Key? key,
+    required this.placeholder,
+    required this.controller,
+    this.isPassword,
+  }) : super(key: key);
+
+  @override
+  _CustomTextInputState createState() => _CustomTextInputState();
+}
+
+class _CustomTextInputState extends State<CustomTextInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -161,12 +207,15 @@ class CustomTextInput extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0), // Border radius
       ),
       child: TextFormField(
+        key: widget.key, // Unique key for each TextFormField
+        obscureText: widget.isPassword ?? false,
+        controller: widget.controller,
         style: MainTheme.themeData.textTheme.displaySmall!
             .copyWith(color: MainTheme.thirdColor),
         decoration: InputDecoration(
           hintStyle: MainTheme.themeData.textTheme.displaySmall!
               .copyWith(color: MainTheme.thirdColor),
-          hintText: placeholder, // Placeholder text
+          hintText: widget.placeholder, // Placeholder text
           border: InputBorder.none, // Remove the default underline border
         ),
       ),
@@ -197,11 +246,37 @@ class VideoSection extends StatelessWidget {
 }
 
 Future<dynamic> signInWithEmailAndPassword(
-    {required String emailAddress, required String password}) async {
-  print("Signing In...");
-  Authentication authentication =
-      Authentication(emailAddress: emailAddress, password: password);
+    {required String emailAddress,
+    required String password,
+    required BuildContext context}) async {
+  try {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  dynamic result = await authentication.signInWithEmailAndPassword();
-  print(result);
+    Authentication authentication =
+        Authentication(emailAddress: emailAddress, password: password);
+
+    dynamic result = await authentication.signInWithEmailAndPassword();
+
+    if (result != null) {
+      if (result is String) {
+        return false;
+      } else {
+        User user = User(
+            username: "username",
+            password: "security reasons",
+            userID: result.user.email,
+            mail: result.user.email);
+        await prefs.setString("SessionMail", emailAddress);
+        return true;
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kullanıcı adı veya Şifre Hatalı")),
+      );
+    }
+    return false;
+  } on Exception catch (e) {
+    debugPrint(e.toString());
+    return false;
+  }
 }
