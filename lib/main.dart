@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/routes/Route.dart';
+import 'package:inven3io/core/home/screens/home.dart';
 import 'package:inven3io/core/login/screens/login_screen.dart';
 import 'config/themes/main_theme.dart';
 // Database Imports
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: MainTheme.themeData,
         home: const LoginScreen(),
         routes: Routes.routes);

@@ -5,7 +5,7 @@ import '../../core/login/screens/login_screen.dart';
 
 class Routes {
   static Map<String, Widget Function(BuildContext)> routes = {
-    "/home": (context) => HomeScreen(),
-    "/login": (context) => LoginScreen()
+    "/home": (context) => const HomeScreen(),
+    "/login": (context) => const LoginScreen()
   };
 }

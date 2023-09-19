@@ -4,10 +4,12 @@ class MainTheme {
   static const Color _primaryColor = Color(0xFFF9C18E);
   static const Color _secondaryColor = Color(0XFFE07C20);
   static const Color _thirdColor = Colors.white;
+  static const Color _fourthColor = Color(0XFFFC8A21);
 
   static Color get primaryColor => _primaryColor;
   static Color get secondaryColor => _secondaryColor;
   static Color get thirdColor => _thirdColor;
+  static Color get fourthColor => _fourthColor;
 
   static ThemeData themeData = ThemeData(
     colorScheme: ColorScheme.fromSwatch().copyWith(
