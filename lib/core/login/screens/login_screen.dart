@@ -73,7 +73,7 @@ class LogoAndFormSection extends StatelessWidget {
             border: Border.all(color: MainTheme.secondaryColor, width: 4)),
         child: SingleChildScrollView(
           child: Column(
-            children: [Image.asset(imageAssetString), FormSection()],
+            children: [Image.asset(imageAssetString), const FormSection()],
           ),
         ),
       ),
@@ -84,7 +84,7 @@ class LogoAndFormSection extends StatelessWidget {
 class FormSection extends StatefulWidget {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  FormSection({
+  const FormSection({
     super.key,
   });
 
@@ -183,7 +183,7 @@ class CustomTextInput extends StatefulWidget {
   final TextEditingController controller;
   final bool? isPassword;
 
-  CustomTextInput({
+  const CustomTextInput({
     Key? key,
     required this.placeholder,
     required this.controller,
@@ -271,7 +271,7 @@ Future<dynamic> signInWithEmailAndPassword(
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kullanıcı adı veya Şifre Hatalı")),
+        const SnackBar(content: Text("Kullanıcı adı veya Şifre Hatalı")),
       );
     }
     return false;

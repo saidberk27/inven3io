@@ -23,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Image.asset(imageAssetString),
               Padding(
-                  padding:
-                      EdgeInsets.only(top: 0, right: 16, left: 16, bottom: 0),
+                  padding: const EdgeInsets.only(
+                      top: 0, right: 16, left: 16, bottom: 0),
                   child: Stack(
                     children: [
                       MainContainer(
@@ -59,33 +59,31 @@ class MainContainer extends StatelessWidget {
         color: MainTheme.secondaryColor,
         child: Column(
           children: [
-            Expanded(flex: 55, child: SizedBox()),
+            const Expanded(flex: 55, child: SizedBox()),
             Expanded(
                 flex: 100,
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        ShopSection(
-                            image: 'assets/images/tesvikiye.png',
-                            text: 'TEŞVİKİYE',
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight),
-                        SizedBox(height: 20),
-                        ShopSection(
-                            image: 'assets/images/fenerbahce.png',
-                            text: 'FENERBAHÇE',
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight),
-                        SizedBox(height: 20),
-                        ShopSection(
-                            image: 'assets/images/kozyatagi.png',
-                            text: 'KOZYATAĞI',
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight),
-                      ],
-                    ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      ShopSection(
+                          image: 'assets/images/tesvikiye.png',
+                          shopName: 'TEŞVİKİYE',
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight),
+                      const SizedBox(height: 20),
+                      ShopSection(
+                          image: 'assets/images/fenerbahce.png',
+                          shopName: 'FENERBAHÇE',
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight),
+                      const SizedBox(height: 20),
+                      ShopSection(
+                          image: 'assets/images/kozyatagi.png',
+                          shopName: 'KOZYATAĞI',
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight),
+                    ],
                   ),
                 ))
           ],
@@ -99,19 +97,24 @@ class ShopSection extends StatelessWidget {
     required this.screenWidth,
     required this.screenHeight,
     required this.image,
-    required this.text,
+    required this.shopName,
   });
 
   final double screenWidth;
   final double screenHeight;
   late String image;
-  late String text;
+  late String shopName;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print(text);
+        Navigator.of(context).pushNamed(
+          '/shop',
+          arguments: {
+            'shopName': shopName
+          }, // Replace 'YourShopNameHere' with the actual shop name
+        );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -130,7 +133,7 @@ class ShopSection extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                text,
+                shopName,
                 style: MainTheme.themeData.textTheme.displaySmall!
                     .copyWith(color: MainTheme.thirdColor),
               ),
