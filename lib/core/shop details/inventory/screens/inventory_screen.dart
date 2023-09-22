@@ -72,7 +72,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/addProductForm");
+                  Navigator.pushNamed(context, "/addProductForm",
+                      arguments: {"barcodeData": barcodeData});
                 },
                 child: Text(
                   "Ürünü Ekle",
