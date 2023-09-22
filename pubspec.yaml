@@ -24,6 +24,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
+    - assets/videos/
+    - assets/fonts/
+
   fonts:
     - family: MainFont
       fonts:

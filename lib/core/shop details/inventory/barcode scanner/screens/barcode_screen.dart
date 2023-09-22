@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class BarcodeScannerScreen extends StatefulWidget {
   const BarcodeScannerScreen({super.key});
@@ -29,11 +28,9 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
 
             var res = "9781234567897";
             setState(() {
-              if (res is String) {
-                barcodeData = res;
-                print(barcodeData);
-              }
-            });
+              barcodeData = res;
+              print(barcodeData);
+                        });
           },
           child: const Text('Open Scanner'),
         ),

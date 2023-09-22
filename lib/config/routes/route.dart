@@ -11,9 +11,9 @@ class Routes {
   static Map<String, Widget Function(BuildContext)> routes = {
     "/home": (context) => const HomeScreen(),
     "/login": (context) => const LoginScreen(),
-    "/shop": (context) => ShopDetailsScreen(),
-    "/inventory": (context) => InventoryScreen(),
-    "/analytics": (context) => AnalyticsScreen(),
-    "/barcode": (context) => BarcodeScannerScreen()
+    "/shop": (context) => const ShopDetailsScreen(),
+    "/inventory": (context) => const InventoryScreen(),
+    "/analytics": (context) => const AnalyticsScreen(),
+    "/barcode": (context) => const BarcodeScannerScreen()
   };
 }

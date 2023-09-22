@@ -17,16 +17,16 @@ class _InventoryScreenState extends State<InventoryScreen> {
         title: Image.asset(imageAssetString),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(
+        label: const Text(
           "Scan Barcode",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        icon: Icon(Icons.qr_code_scanner),
+        icon: const Icon(Icons.qr_code_scanner),
         onPressed: () {
           Navigator.pushNamed(context, '/barcode');
         },
       ),
-      body: Center(
+      body: const Center(
         child: Text("Inventory"),
       ),
     );

@@ -4,7 +4,7 @@ import 'package:inven3io/core/home/screens/home.dart';
 import 'package:inven3io/core/shop%20details/models/shop_model.dart';
 
 class ShopDetailsScreen extends StatefulWidget {
-  ShopDetailsScreen({super.key});
+  const ShopDetailsScreen({super.key});
 
   @override
   State<ShopDetailsScreen> createState() => _ShopDetailsScreenState();
@@ -70,9 +70,9 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
@@ -81,7 +81,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                       child: Container(
                         color: MainTheme.primaryColor,
                         child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: ShopHeader(displayShop: displayShop),
                         ),
                       )),
@@ -90,7 +90,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                       child: Container(
                         width: double.infinity,
                         color: MainTheme.fifthColor,
-                        child: Column(
+                        child: const Column(
                           children: [
                             Item(
                               assetString: homeAssetString,
@@ -130,14 +130,14 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: ListTile(
         leading: Image.asset(assetString),
         title: Text(
           text,
           style: MainTheme.themeData.textTheme.displayMedium,
         ),
-        trailing: Icon(Icons.arrow_forward_ios_sharp),
+        trailing: const Icon(Icons.arrow_forward_ios_sharp),
         onTap: () {
           switch (text) {
             case "Home":
@@ -201,7 +201,7 @@ class ContactTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Table(
       border: TableBorder.all(),
-      columnWidths: {
+      columnWidths: const {
         0: FlexColumnWidth(1), // Set the first column width to 1
         1: FlexColumnWidth(2), // Set the second column width to 2
       },
@@ -212,7 +212,7 @@ class ContactTable extends StatelessWidget {
               child: Container(
                 color: MainTheme
                     .fourthColor, // Set the background color of the first cell to orange
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Mobile',
                     style: TextStyle(
@@ -237,7 +237,7 @@ class ContactTable extends StatelessWidget {
               child: Container(
                 color: MainTheme
                     .fourthColor, // Set the background color of the second cell to red
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Tel',
                     style: TextStyle(
@@ -261,7 +261,7 @@ class ContactTable extends StatelessWidget {
             TableCell(
               child: Container(
                 color: MainTheme.fourthColor,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'E - Mail',
                     style: TextStyle(color: Colors.white),
