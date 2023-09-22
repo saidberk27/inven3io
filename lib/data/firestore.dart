@@ -10,8 +10,21 @@ class Firestore {
         .then((value) => print("Document added with $value"));
   }
 
+  Future<Map<String, dynamic>> readSingleDocument(
+      {required String collectionPath, required String documentID}) async {
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection(collectionPath);
+    DocumentSnapshot documentSnapshot = await collection.doc(documentID).get();
+
+    if (documentSnapshot.exists) {
+      return documentSnapshot.data() as Map<String, dynamic>;
+    } else {
+      return {"status": "no file found"};
+    }
+  }
+
   Future<List<Map<String, dynamic>>> readDocumentsOfCollection(
-      String collectionPath) async {
+      {required String collectionPath}) async {
     CollectionReference collection =
         FirebaseFirestore.instance.collection(collectionPath);
 

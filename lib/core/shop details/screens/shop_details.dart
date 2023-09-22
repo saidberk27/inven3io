@@ -90,19 +90,22 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                       child: Container(
                         width: double.infinity,
                         color: MainTheme.fifthColor,
-                        child: const Column(
+                        child: Column(
                           children: [
                             Item(
                               assetString: homeAssetString,
                               text: "Home",
+                              displayShop: displayShop,
                             ),
                             Item(
                               assetString: inventoryAssetString,
                               text: "Inventory",
+                              displayShop: displayShop,
                             ),
                             Item(
                               assetString: analyticsAssetString,
                               text: "Analytics",
+                              displayShop: displayShop,
                             )
                           ],
                         ),
@@ -118,14 +121,15 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
 }
 
 class Item extends StatelessWidget {
-  const Item({
-    super.key,
-    required this.assetString,
-    required this.text,
-  });
+  const Item(
+      {super.key,
+      required this.assetString,
+      required this.text,
+      required this.displayShop});
 
   final String assetString;
   final String text;
+  final Shop displayShop;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +155,8 @@ class Item extends StatelessWidget {
               break;
 
             case "Inventory":
-              Navigator.pushNamed(context, "/inventory");
+              Navigator.pushNamed(context, "/inventory",
+                  arguments: {"currentShopID": displayShop.shopID});
               break;
 
             case "Analytics":
