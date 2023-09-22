@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.1
+  simple_barcode_scanner: ^0.0.8
   video_player: ^2.7.1
 
 dev_dependencies:

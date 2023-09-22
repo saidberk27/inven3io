@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
+import 'package:inven3io/core/home/screens/home.dart';
 import 'package:inven3io/core/shop%20details/models/shop_model.dart';
 
 class ShopDetailsScreen extends StatefulWidget {
@@ -16,6 +17,9 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
     late Shop displayShop;
 
     const String imageAssetString = 'assets/images/logowhite.png';
+    const String homeAssetString = 'assets/images/home.png';
+    const String inventoryAssetString = 'assets/images/inventory.png';
+    const String analyticsAssetString = 'assets/images/analytics.png';
     final Map<String, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final String shopName = args['shopName'];
@@ -84,13 +88,77 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                   Expanded(
                       flex: 6,
                       child: Container(
+                        width: double.infinity,
                         color: MainTheme.fifthColor,
+                        child: Column(
+                          children: [
+                            Item(
+                              assetString: homeAssetString,
+                              text: "Home",
+                            ),
+                            Item(
+                              assetString: inventoryAssetString,
+                              text: "Inventory",
+                            ),
+                            Item(
+                              assetString: analyticsAssetString,
+                              text: "Analytics",
+                            )
+                          ],
+                        ),
                       ))
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Item extends StatelessWidget {
+  const Item({
+    super.key,
+    required this.assetString,
+    required this.text,
+  });
+
+  final String assetString;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: ListTile(
+        leading: Image.asset(assetString),
+        title: Text(
+          text,
+          style: MainTheme.themeData.textTheme.displayMedium,
+        ),
+        trailing: Icon(Icons.arrow_forward_ios_sharp),
+        onTap: () {
+          switch (text) {
+            case "Home":
+              Navigator.pushAndRemoveUntil<void>(
+                context,
+                MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const HomeScreen()),
+                ModalRoute.withName('/'),
+              );
+
+              break;
+
+            case "Inventory":
+              Navigator.pushNamed(context, "/inventory");
+              break;
+
+            case "Analytics":
+              Navigator.pushNamed(context, "/analytics");
+              break;
+          }
+        },
       ),
     );
   }
@@ -106,20 +174,17 @@ class ShopHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            "${displayShop.shopName} ColorBox",
-            textAlign: TextAlign.center,
-            style: MainTheme.themeData.textTheme.displaySmall,
-          ),
-          Image.asset(displayShop.shopImage),
-          ContactTable(displayShop: displayShop)
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(
+          "${displayShop.shopName} ColorBox",
+          textAlign: TextAlign.center,
+          style: MainTheme.themeData.textTheme.displaySmall,
+        ),
+        Image.asset(displayShop.shopImage),
+        ContactTable(displayShop: displayShop)
+      ],
     );
   }
 }
