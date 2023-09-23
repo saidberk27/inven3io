@@ -2,12 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Firestore {
   Future<void> addDocument(
-      String collectionPath, Map<String, dynamic> document) async {
+      {required String collectionPath,
+      required Map<String, dynamic> document}) async {
     CollectionReference collection =
         FirebaseFirestore.instance.collection(collectionPath);
     await collection
         .add(document)
         .then((value) => print("Document added with $value"));
+  }
+
+  void addDocumentWithCustomID(
+      {required String collectionPath,
+      required String customID,
+      required Map<String, dynamic> document}) {
+    FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(customID)
+        .set(document)
+        .then((_) {
+      print('Document added with custom ID: $customID');
+    }).catchError((error) {
+      print('Error adding document: $error');
+    });
   }
 
   Future<Map<String, dynamic>> readSingleDocument(

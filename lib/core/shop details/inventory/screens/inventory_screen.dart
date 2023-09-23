@@ -40,7 +40,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
           if (barcodeRelatedFile["status"] == "no file found") {
             print("First Detection of Barcode");
-            warningBottomSheet(context);
+            warningBottomSheet(context, currentShopID: currentShopID);
           }
         },
       ),
@@ -50,7 +50,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
-  Future<dynamic> warningBottomSheet(BuildContext context) {
+  Future<dynamic> warningBottomSheet(BuildContext context,
+      {required String currentShopID}) {
     return showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -60,23 +61,25 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Column(
             children: [
               Text(
-                "Bu Ürün Veritabanında Bulunmuyor!",
+                "Product Not Found on Database!",
                 textAlign: TextAlign.center,
                 style: MainTheme.themeData.textTheme.displayLarge!
                     .copyWith(color: MainTheme.secondaryColor),
               ),
-              Text("Barkod Numarası: $barcodeData",
+              Text("Barcode Number: $barcodeData",
                   style: MainTheme.themeData.textTheme.displaySmall!),
               SizedBox(
                 height: 20,
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/addProductForm",
-                      arguments: {"barcodeData": barcodeData});
+                  Navigator.pushNamed(context, "/addProductForm", arguments: {
+                    "barcodeData": barcodeData,
+                    "shopID": currentShopID
+                  });
                 },
                 child: Text(
-                  "Ürünü Ekle",
+                  "Add Product",
                   style: MainTheme.themeData.textTheme.displaySmall!
                       .copyWith(color: Colors.white),
                 ),

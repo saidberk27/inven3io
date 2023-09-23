@@ -5,13 +5,15 @@ class CustomTextInput extends StatefulWidget {
   final String placeholder;
   final TextEditingController controller;
   final bool? isPassword;
+  final bool? isNumeric;
 
-  const CustomTextInput({
-    Key? key,
-    required this.placeholder,
-    required this.controller,
-    this.isPassword,
-  }) : super(key: key);
+  const CustomTextInput(
+      {Key? key,
+      required this.placeholder,
+      required this.controller,
+      this.isPassword,
+      this.isNumeric})
+      : super(key: key);
 
   @override
   _CustomTextInputState createState() => _CustomTextInputState();
@@ -32,6 +34,9 @@ class _CustomTextInputState extends State<CustomTextInput> {
       child: TextFormField(
         key: widget.key, // Unique key for each TextFormField
         obscureText: widget.isPassword ?? false,
+        keyboardType: widget.isNumeric != null
+            ? TextInputType.number
+            : TextInputType.text,
         controller: widget.controller,
         style: MainTheme.themeData.textTheme.displaySmall!
             .copyWith(color: MainTheme.thirdColor),
