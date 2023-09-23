@@ -62,7 +62,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           future: productList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return CircularProgressIndicator(color: MainTheme.secondaryColor);
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
@@ -206,8 +206,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => const SimpleBarcodeScannerPage(),
-        )); */
-
+        ));
+*/
     var res = "8781234567897";
     setState(() {
       barcodeData = res;

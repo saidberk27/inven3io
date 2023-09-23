@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_screen.dart';
 import 'package:inven3io/core/shop%20details/analytics/screens/analytics_screen.dart';
 import 'package:inven3io/core/shop%20details/inventory/add%20product/add_product_form.dart';
 
@@ -16,5 +17,6 @@ class Routes {
     "/inventory": (context) => const InventoryScreen(),
     "/analytics": (context) => const AnalyticsScreen(),
     "/addProductForm": (context) => AddProductForm(),
+    "/report": (context) => ReportScreen()
   };
 }
