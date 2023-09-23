@@ -16,7 +16,9 @@ class Routes {
     "/shop": (context) => const ShopDetailsScreen(),
     "/inventory": (context) => const InventoryScreen(),
     "/analytics": (context) => const AnalyticsScreen(),
-    "/addProductForm": (context) => AddProductForm(),
-    "/report": (context) => ReportScreen()
+    "/addProductForm": (context) => const AddProductForm(),
+    "/report": (context) => ReportScreen(
+          month: "config",
+        )
   };
 }

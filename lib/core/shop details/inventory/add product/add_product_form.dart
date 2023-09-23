@@ -51,22 +51,22 @@ class _AddProductFormState extends State<AddProductForm> {
                 CustomTextInput(
                     placeholder: "Product Name",
                     controller: _productNameController),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextInput(
                   placeholder: "Product Description",
                   controller: _productDescController,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextInput(
                     placeholder: "Buy Price",
                     controller: _buyPriceController,
                     isNumeric: true),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextInput(
                     placeholder: "Sell Price",
                     controller: _sellPriceController,
                     isNumeric: true),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: MainTheme.secondaryColor),
@@ -93,7 +93,7 @@ class _AddProductFormState extends State<AddProductForm> {
                         barcodeData: product.productBarcode,
                         shopName: shop.shopName);
                     Navigator.of(context).pushReplacementNamed("/home");
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content:
                             Text("Product Succesfully Added to Database")));
                   },

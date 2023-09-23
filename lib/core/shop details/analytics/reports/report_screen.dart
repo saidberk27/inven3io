@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../config/themes/main_theme.dart';
 
 class ReportScreen extends StatefulWidget {
-  const ReportScreen({super.key});
+  late String month;
+  ReportScreen({super.key, required this.month});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -16,34 +18,66 @@ class _ReportScreenState extends State<ReportScreen> {
 
   late List<ChartDataPie> dataItemsSoldPie;
   late List<ChartDataPie> dataRevenuePie;
+
+  late Map<String, String> bestSeller;
+
+  late ReportViewModel reportViewModel;
   late TooltipBehavior _tooltip;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    reportViewModel = ReportViewModel();
+    Map<String, dynamic> monthData =
+        reportViewModel.getDataOfMonth(month: widget.month);
+    print(monthData);
     dataItemsSold = [
-      ChartDataGeneral('TEŞVİKİYE', 20),
-      ChartDataGeneral('FENERBAHÇE', 40),
-      ChartDataGeneral('KOZYATAĞI', 90),
+      ChartDataGeneral(
+          'TEŞVİKİYE', monthData['Tesvikiye']['shopSold'].toDouble()),
+      ChartDataGeneral(
+          'FENERBAHÇE', monthData['Fenerbahce']['shopSold'].toDouble()),
+      ChartDataGeneral(
+          'KOZYATAĞI', monthData['Kozyatagi']['shopSold'].toDouble()),
     ];
 
     dataRevenue = [
-      ChartDataGeneral('TEŞVİKİYE', 20 * 6),
-      ChartDataGeneral('FENERBAHÇE', 40 * 6),
-      ChartDataGeneral('KOZYATAĞI', 90 * 6),
+      ChartDataGeneral(
+          'TEŞVİKİYE', monthData['Tesvikiye']['shopRevenue'].toDouble()),
+      ChartDataGeneral(
+          'FENERBAHÇE', monthData['Fenerbahce']['shopRevenue'].toDouble()),
+      ChartDataGeneral(
+          'KOZYATAĞI', monthData['Kozyatagi']['shopRevenue'].toDouble()),
     ];
 
     dataItemsSoldPie = [
-      ChartDataPie('TEŞVİKİYE', 20, MainTheme.secondaryColor),
-      ChartDataPie('FENERBAHÇE', 40, MainTheme.fifthColor),
-      ChartDataPie('KOZYATAĞI', 90, MainTheme.fourthColor),
+      ChartDataPie('TEŞVİKİYE', monthData['Tesvikiye']['shopSold'].toDouble(),
+          MainTheme.secondaryColor),
+      ChartDataPie('FENERBAHÇE', monthData['Fenerbahce']['shopSold'].toDouble(),
+          MainTheme.fifthColor),
+      ChartDataPie('KOZYATAĞI', monthData['Kozyatagi']['shopSold'].toDouble(),
+          MainTheme.fourthColor),
     ];
 
     dataRevenuePie = [
-      ChartDataPie('TEŞVİKİYE', 20 * 6, MainTheme.secondaryColor),
-      ChartDataPie('FENERBAHÇE', 40 * 6, MainTheme.fifthColor),
-      ChartDataPie('KOZYATAĞI', 90 * 6, MainTheme.fourthColor),
+      ChartDataPie(
+          'TEŞVİKİYE',
+          monthData['Tesvikiye']['shopRevenue'].toDouble(),
+          MainTheme.secondaryColor),
+      ChartDataPie(
+          'FENERBAHÇE',
+          monthData['Fenerbahce']['shopRevenue'].toDouble(),
+          MainTheme.fifthColor),
+      ChartDataPie(
+          'KOZYATAĞI',
+          monthData['Kozyatagi']['shopRevenue'].toDouble(),
+          MainTheme.fourthColor),
     ];
+
+    bestSeller = {
+      "Tesvikiye": monthData['Tesvikiye']['bestSeller'],
+      "Fenerbahce": monthData['Fenerbahce']['bestSeller'],
+      "Kozyatagi": monthData['Kozyatagi']['bestSeller']
+    };
+
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
   }
@@ -60,26 +94,27 @@ class _ReportScreenState extends State<ReportScreen> {
             child: Column(
               children: [
                 Text(
-                  "2023 August Report",
+                  "2023 ${widget.month} Report",
                   textAlign: TextAlign.center,
                   style: MainTheme.themeData.textTheme.displayLarge!
                       .copyWith(color: MainTheme.secondaryColor),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Table(
+                  border: TableBorder.all(),
                   children: [
                     _buildTableRow('Total Number Of Items Sold', '90'),
                     _buildTableRow('Total Revenue', '360'),
                     _buildTableRow('Increase From Last Month', '%4.9'),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ColumnChart(
                   tooltip: _tooltip,
                   dataItemsSold: dataItemsSold,
                   dataRevenue: dataRevenue,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Column(
                   children: [
                     Text("Products Sold",
@@ -88,13 +123,30 @@ class _ReportScreenState extends State<ReportScreen> {
                     PieChart(dataMap: dataItemsSoldPie),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Column(
                   children: [
                     Text("Products Revenue",
                         style: MainTheme.themeData.textTheme.displayMedium!
                             .copyWith(color: MainTheme.secondaryColor)),
                     PieChart(dataMap: dataRevenuePie, isDoughnut: true),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    Text("Reccomended Product",
+                        style: MainTheme.themeData.textTheme.displayMedium!
+                            .copyWith(color: MainTheme.secondaryColor)),
+                    SizedBox(height: 10),
+                    Table(
+                      border: TableBorder.all(),
+                      children: [
+                        _buildTableRow('Teşvikiye', bestSeller['Tesvikiye']!),
+                        _buildTableRow('Fenerbahçe', bestSeller['Fenerbahce']!),
+                        _buildTableRow('Kozyatağı', bestSeller['Kozyatagi']!)
+                      ],
+                    )
                   ],
                 ),
               ],
@@ -150,19 +202,19 @@ class PieChart extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.rectangle, color: MainTheme.fourthColor),
-                Text("KOZYATAĞI")
+                const Text("KOZYATAĞI")
               ],
             ),
             Row(
               children: [
                 Icon(Icons.rectangle, color: MainTheme.fifthColor),
-                Text("FENERBAHÇE")
+                const Text("FENERBAHÇE")
               ],
             ),
             Row(
               children: [
                 Icon(Icons.rectangle, color: MainTheme.secondaryColor),
-                Text("TEŞVİKİYE")
+                const Text("TEŞVİKİYE")
               ],
             )
           ],
@@ -190,7 +242,7 @@ class ColumnChart extends StatelessWidget {
     return SfCartesianChart(
         primaryXAxis: CategoryAxis(labelStyle: labelStyle),
         primaryYAxis: NumericAxis(
-            minimum: 0, maximum: 600, interval: 20, labelStyle: labelStyle),
+            minimum: 0, maximum: 100, interval: 10, labelStyle: labelStyle),
         tooltipBehavior: _tooltip,
         legend: Legend(
             isVisible: true,
@@ -225,10 +277,12 @@ TableRow _buildTableRow(String header, String content) {
 TableCell _buildTableCell(String text, Color backgroundColor, Color textColor) {
   return TableCell(
     child: Container(
+      height: 50,
       color: backgroundColor,
       child: Center(
         child: Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: textColor,
           ),

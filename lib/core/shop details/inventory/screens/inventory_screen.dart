@@ -75,7 +75,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       "Product List",
                       style: MainTheme.themeData.textTheme.displayLarge,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Expanded(
@@ -97,7 +97,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   ListView listItems(List<Map<String, dynamic>>? items) {
     return ListView.separated(
       itemCount: items!.length,
-      separatorBuilder: (context, index) => Divider(),
+      separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         return ListTile(
           tileColor: MainTheme.secondaryColor,
@@ -113,7 +113,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
             size: 36,
             color: MainTheme.fifthColor,
           ),
-          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
         );
       },
     );
@@ -136,13 +136,13 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
               Text("Barcode Number: $barcodeData",
                   style: MainTheme.themeData.textTheme.displaySmall!),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   InventoryViewModel vm = InventoryViewModel();
                   vm.sellProduct(product: soldProduct, shop: currentShop);
                   Navigator.of(context).pushNamed("/home");
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Product Marked as Sold Succesfully")));
                 },
                 child: Text(
@@ -176,7 +176,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ),
               Text("Barcode Number: $barcodeData",
                   style: MainTheme.themeData.textTheme.displaySmall!),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
