@@ -24,6 +24,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     Shop currentShop = args["currentShop"];
     String currentShopID = currentShop.shopID;
+    InventoryViewModel vm = InventoryViewModel();
+    Future<List<Map<String, dynamic>>> productList =
+        vm.getAllProducts(shop: currentShop);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,9 +57,65 @@ class _InventoryScreenState extends State<InventoryScreen> {
           }
         },
       ),
-      body: const Center(
-        child: Text("Inventory"),
+      body: Center(
+        child: FutureBuilder(
+          future: productList,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final items = snapshot.data;
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Product List",
+                      style: MainTheme.themeData.textTheme.displayLarge,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height / 8),
+                      child: listItems(items),
+                    )),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
+    );
+  }
+
+  ListView listItems(List<Map<String, dynamic>>? items) {
+    return ListView.separated(
+      itemCount: items!.length,
+      separatorBuilder: (context, index) => Divider(),
+      itemBuilder: (context, index) {
+        return ListTile(
+          tileColor: MainTheme.secondaryColor,
+          title: Text(
+            items[index]["productName"],
+            style: MainTheme.themeData.textTheme.displaySmall!.copyWith(
+              color: MainTheme.fifthColor,
+            ),
+          ),
+          subtitle: Text("Barcode: ${items[index]["productBarcode"]}"),
+          leading: Icon(
+            Icons.add_box_outlined,
+            size: 36,
+            color: MainTheme.fifthColor,
+          ),
+          trailing: Icon(Icons.arrow_forward_ios_rounded),
+        );
+      },
     );
   }
 
@@ -82,6 +141,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 onPressed: () {
                   InventoryViewModel vm = InventoryViewModel();
                   vm.sellProduct(product: soldProduct, shop: currentShop);
+                  Navigator.of(context).pushNamed("/home");
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Product Marked as Sold Succesfully")));
                 },
                 child: Text(
                   "Sell Product",
@@ -146,7 +208,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           builder: (context) => const SimpleBarcodeScannerPage(),
         )); */
 
-    var res = "9781234567897";
+    var res = "8781234567897";
     setState(() {
       barcodeData = res;
     });
