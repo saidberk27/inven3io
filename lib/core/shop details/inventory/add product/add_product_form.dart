@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
 import 'package:inven3io/core/shop%20details/inventory/add%20product/product.dart';
+import 'package:inven3io/core/shop%20details/inventory/viewmodels/inventory_vm.dart';
 import 'package:inven3io/data/firestore.dart';
 import 'package:inven3io/widgets/custom_text_input.dart';
+
+import '../../models/shop_model.dart';
 
 class AddProductForm extends StatefulWidget {
   const AddProductForm({super.key});
@@ -21,14 +24,15 @@ class _AddProductFormState extends State<AddProductForm> {
     final Map<String, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    final barcodeData = args["barcodeData"];
-    final shopID = args["shopID"];
+    final String barcodeData = args["barcodeData"];
+    final Shop shop = args["currentShop"];
     final TextEditingController _productNameController =
         TextEditingController();
     final TextEditingController _productDescController =
         TextEditingController();
     final TextEditingController _buyPriceController = TextEditingController();
     final TextEditingController _sellPriceController = TextEditingController();
+    final InventoryViewModel vm = InventoryViewModel();
     return Scaffold(
       appBar: AppBar(title: Image.asset(imageAssetString)),
       body: Padding(
@@ -80,10 +84,14 @@ class _AddProductFormState extends State<AddProductForm> {
                         sellPrice: double.parse(_sellPriceController.text));
 
                     db.addDocumentWithCustomID(
-                        collectionPath: "/shops/$shopID/products",
+                        collectionPath: "/shops/${shop.shopID}/products",
                         customID: barcodeData,
                         document: product.toJson());
-
+                    vm.log(
+                        procces: "ADD",
+                        productName: product.productName,
+                        barcodeData: product.productBarcode,
+                        shopName: shop.shopName);
                     Navigator.of(context).pushReplacementNamed("/home");
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content:

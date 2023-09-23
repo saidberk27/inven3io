@@ -61,9 +61,12 @@ class Firestore {
     await collection.doc(documentID).update(updatedData);
   }
 
-  Future<void> deleteData(String collectionPath, String documentID) async {
+  Future<void> removeDocument(
+      {required String collectionPath, required String documentID}) async {
     CollectionReference collection =
         FirebaseFirestore.instance.collection(collectionPath);
-    await collection.doc(documentID).delete();
+    await collection.doc(documentID).delete().then((value) {
+      print("Document deleted.");
+    });
   }
 }

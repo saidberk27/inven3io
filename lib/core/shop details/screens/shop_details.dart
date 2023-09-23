@@ -156,7 +156,7 @@ class Item extends StatelessWidget {
 
             case "Inventory":
               Navigator.pushNamed(context, "/inventory",
-                  arguments: {"currentShopID": displayShop.shopID});
+                  arguments: {"currentShop": displayShop});
               break;
 
             case "Analytics":
