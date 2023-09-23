@@ -91,6 +91,7 @@ class _AddProductFormState extends State<AddProductForm> {
                         procces: "ADD",
                         productName: product.productName,
                         barcodeData: product.productBarcode,
+                        sellPrice: product.sellPrice,
                         shopName: shop.shopName);
                     Navigator.of(context).pushReplacementNamed("/home");
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

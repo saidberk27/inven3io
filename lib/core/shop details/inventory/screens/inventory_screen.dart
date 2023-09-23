@@ -208,7 +208,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           builder: (context) => const SimpleBarcodeScannerPage(),
         ));
 */
-    var res = "8781234567897";
+    var res = "LV-WN-916";
     setState(() {
       barcodeData = res;
     });

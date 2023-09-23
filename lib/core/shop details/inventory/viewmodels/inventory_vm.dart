@@ -27,6 +27,7 @@ class InventoryViewModel {
           procces: "SELL",
           productName: product.productName,
           barcodeData: product.productBarcode,
+          sellPrice: product.sellPrice,
           shopName: shop.shopName);
 
       return true;
@@ -40,6 +41,7 @@ class InventoryViewModel {
       {required String procces,
       required String productName,
       required String barcodeData,
+      required double sellPrice,
       required String shopName}) async {
     Firestore db = Firestore();
     Map<String, dynamic> logData;
@@ -48,6 +50,7 @@ class InventoryViewModel {
         "procces": procces,
         "productName": productName,
         "barcodeData": barcodeData,
+        "sellPrice": sellPrice,
         "shopName": shopName,
         "timeStamp": Timestamp.fromDate(DateTime.now())
       };

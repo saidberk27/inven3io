@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_generator.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -19,8 +20,41 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Image.asset(imageAssetString)),
+      floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.add),
+          onPressed: () async {
+            showDialog(
+              context: context,
+              barrierDismissible:
+                  false, // Prevent closing the dialog by tapping outside
+              builder: (BuildContext context) {
+                // You can use a CircularProgressIndicator or any other widget here
+                return Dialog(
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(), // Replace with your loading indicator
+                        SizedBox(height: 16.0),
+                        Text("Your report is generating... Please Wait"),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+
+            ReportGenerator().generateReport().then((value) {
+              print(
+                  value); // TODO bu value'yi fireabse'ye at. September raporu için firebase'den verileri al. Bestselleri eklemeyi unutma.
+              Navigator.of(context).pop();
+            });
+          },
+          label: Text("Generate Report")),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 64),
         child: Column(
           children: [
             Text("All Reports",

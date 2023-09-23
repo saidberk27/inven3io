@@ -4,6 +4,7 @@ class ReportViewModel {
   DemoData demoData = DemoData();
   late Map<String, dynamic> data;
   Map<String, dynamic> getDataOfMonth({required String month}) {
+    // Using for exported data
     switch (month) {
       case "July":
         data = demoData.july;
