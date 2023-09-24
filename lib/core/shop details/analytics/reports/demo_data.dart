@@ -1,5 +1,6 @@
 class DemoData {
   Map<String, Map<String, dynamic>> july = {
+    "total": {"items": 10.7, "revenue": 225},
     "Tesvikiye": {
       "shopName": "Tesvikiye",
       "shopRevenue": 60,
@@ -22,6 +23,7 @@ class DemoData {
   };
 
   Map<String, Map<String, dynamic>> august = {
+    "total": {"items": 9.5, "revenue": 82},
     "Tesvikiye": {
       "shopName": "Tesvikiye",
       "shopRevenue": 30,

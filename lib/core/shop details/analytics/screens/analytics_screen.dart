@@ -15,7 +15,7 @@ class AnalyticsScreen extends StatefulWidget {
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   final String imageAssetString = 'assets/images/logowhite.png';
-
+  ReportViewModel vm = ReportViewModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +45,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               },
             );
 
-            ReportGenerator().generateReport().then((value) {
-              print(
-                  value); // TODO bu value'yi fireabse'ye at. September raporu için firebase'den verileri al. Bestselleri eklemeyi unutma.
+            ReportGenerator().generateReport().then((report) {
+              // TODO bu value'yi fireabse'ye at. September raporu için firebase'den verileri al. Bestselleri eklemeyi unutma.
+
+              vm.sendReportToDatabase(report: report);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      "Report Succesfully Generated and Updated. Check Current Month's Report From  Analytics Screen")));
               Navigator.of(context).pop();
             });
           },

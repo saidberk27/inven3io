@@ -1,28 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'Report.dart';
+
 class ReportGenerator {
-  Future<Map<String, Map<String, Object>>> generateReport() async {
+  Future<Report> generateReport() async {
     int currentMonth = detectCurrentMonth();
     Map<String, List<QueryDocumentSnapshot<Map<String, dynamic>>>>
         documentsOfMonth = await fetchDocumentsInMonth(month: currentMonth);
 
-    return {
-      "Fenerbahce": {
-        "Revenue": getTotalNumberOfRevenues(
-            documents: documentsOfMonth['Fenerbahce']!),
-        "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Fenerbahce")
-      },
-      "Tesvikiye": {
-        "Revenue":
-            getTotalNumberOfRevenues(documents: documentsOfMonth['Tesvikiye']!),
-        "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Tesvikiye")
-      },
-      "Kozyatagi": {
-        "Revenue":
-            getTotalNumberOfRevenues(documents: documentsOfMonth['Kozyatagi']!),
-        "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Kozyatagi")
-      },
-    };
+    Report report = Report(
+        month: currentMonth,
+        timeStamp: Timestamp.fromDate(DateTime.now()),
+        tesvikiye: {
+          "Revenue": getTotalNumberOfRevenues(
+              documents: documentsOfMonth['Tesvikiye']!),
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Tesvikiye")
+        },
+        fenerbahce: {
+          "Revenue": getTotalNumberOfRevenues(
+              documents: documentsOfMonth['Fenerbahce']!),
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Fenerbahce")
+        },
+        kozyatagi: {
+          "Revenue": getTotalNumberOfRevenues(
+              documents: documentsOfMonth['Kozyatagi']!),
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Kozyatagi")
+        });
+
+    return report;
   }
 
   int detectCurrentMonth() => DateTime.now().month;

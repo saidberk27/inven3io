@@ -1,3 +1,6 @@
+import 'package:inven3io/data/firestore.dart';
+
+import 'Report.dart';
 import 'demo_data.dart';
 
 class ReportViewModel {
@@ -17,5 +20,10 @@ class ReportViewModel {
         break;
     }
     return data;
+  }
+
+  void sendReportToDatabase({required Report report}) {
+    Firestore db = Firestore();
+    db.addDocument(collectionPath: "reports/", document: report.toJson());
   }
 }

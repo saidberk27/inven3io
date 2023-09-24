@@ -21,6 +21,9 @@ class _ReportScreenState extends State<ReportScreen> {
 
   late Map<String, String> bestSeller;
 
+  late double totalItemsSold;
+  late double totalRevenue;
+
   late ReportViewModel reportViewModel;
   late TooltipBehavior _tooltip;
   @override
@@ -29,7 +32,9 @@ class _ReportScreenState extends State<ReportScreen> {
     reportViewModel = ReportViewModel();
     Map<String, dynamic> monthData =
         reportViewModel.getDataOfMonth(month: widget.month);
-    print(monthData);
+
+    totalItemsSold = monthData['total']['items'].toDouble();
+    totalRevenue = monthData['total']['revenue'].toDouble();
     dataItemsSold = [
       ChartDataGeneral(
           'TEŞVİKİYE', monthData['Tesvikiye']['shopSold'].toDouble()),
@@ -103,8 +108,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 Table(
                   border: TableBorder.all(),
                   children: [
-                    _buildTableRow('Total Number Of Items Sold', '90'),
-                    _buildTableRow('Total Revenue', '360'),
+                    _buildTableRow(
+                        'Total Number Of Items Sold', '${totalItemsSold}'),
+                    _buildTableRow('Total Revenue', '${totalRevenue}'),
                     _buildTableRow('Increase From Last Month', '%4.9'),
                   ],
                 ),
