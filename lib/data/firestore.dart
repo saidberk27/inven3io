@@ -59,7 +59,22 @@ class Firestore {
     }
   }
 
-  Future<List<Map<String, dynamic>>> readDocumentsOfCollection({
+  Future<List<Map<String, dynamic>>> readDocumentsOfCollection(
+      {required String collectionPath}) async {
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection(collectionPath);
+
+    QuerySnapshot querySnapshot = await collection.get();
+    List<Map<String, dynamic>> data = [];
+
+    querySnapshot.docs.forEach((doc) {
+      data.add(doc.data() as Map<String, dynamic>);
+    });
+
+    return data;
+  }
+
+  Future<List<Map<String, dynamic>>> readDocumentsOfCollectionByTime({
     required String collectionPath,
   }) async {
     CollectionReference collection =

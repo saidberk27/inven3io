@@ -24,6 +24,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     Shop currentShop = args["currentShop"];
     String currentShopID = currentShop.shopID;
+
     InventoryViewModel vm = InventoryViewModel();
     Future<List<Map<String, dynamic>>> productList =
         vm.getAllProducts(shop: currentShop);
@@ -67,6 +68,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
               return Text('Error: ${snapshot.error}');
             } else {
               final items = snapshot.data;
+              print(items);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(

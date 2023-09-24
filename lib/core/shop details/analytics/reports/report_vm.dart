@@ -36,7 +36,7 @@ class ReportViewModel {
     Firestore db = Firestore();
 
     List<Map<String, dynamic>> recentReports =
-        await db.readDocumentsOfCollection(collectionPath: "reports");
+        await db.readDocumentsOfCollectionByTime(collectionPath: "reports");
 
     Map<String, dynamic> recentReport = recentReports[0];
     num TotalItemsSold = 0;

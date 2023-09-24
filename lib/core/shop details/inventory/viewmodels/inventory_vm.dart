@@ -5,8 +5,10 @@ import 'package:inven3io/data/firestore.dart';
 import '../../models/shop_model.dart';
 
 class InventoryViewModel {
-  Future<List<Map<String, dynamic>>> getAllProducts({required Shop shop}) {
+  Future<List<Map<String, dynamic>>> getAllProducts(
+      {required Shop shop}) async {
     Firestore db = Firestore();
+
     return db.readDocumentsOfCollection(
         collectionPath: "shops/${shop.shopID}/products");
   }
