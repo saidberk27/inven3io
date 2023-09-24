@@ -19,7 +19,7 @@ class _ReportScreenState extends State<ReportScreen> {
   late List<ChartDataPie> dataItemsSoldPie;
   late List<ChartDataPie> dataRevenuePie;
 
-  late Map<String, String> bestSeller;
+  late Map<String, dynamic> bestSeller;
 
   late double totalItemsSold;
   late double totalRevenue;
@@ -37,12 +37,6 @@ class _ReportScreenState extends State<ReportScreen> {
     totalItemsSold = monthData['total']['items'].toDouble();
     totalRevenue = monthData['total']['revenue'].toDouble();
 
-    bestSeller = {
-      "Tesvikiye": monthData['Tesvikiye']['bestSeller'],
-      "Fenerbahce": monthData['Fenerbahce']['bestSeller'],
-      "Kozyatagi": monthData['Kozyatagi']['bestSeller']
-    };
-
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
   }
@@ -57,10 +51,11 @@ class _ReportScreenState extends State<ReportScreen> {
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: reportViewModel.getStats(),
+              future: reportViewModel.getReportFields(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   Map<String, dynamic>? data = snapshot.data;
+
                   // In Future Builder Data Initilazations
                   dataItemsSold = [
                     ChartDataGeneral(
@@ -73,7 +68,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
                   dataRevenue = [
                     ChartDataGeneral(
-                        'TEŞVİKİYE', data!['Tesvikiye']['revenue'].toDouble()),
+                        'TEŞVİKİYE', data['Tesvikiye']['revenue'].toDouble()),
                     ChartDataGeneral(
                         'FENERBAHÇE', data['Fenerbahce']['revenue'].toDouble()),
                     ChartDataGeneral(
@@ -83,7 +78,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   dataItemsSoldPie = [
                     ChartDataPie(
                         'TEŞVİKİYE',
-                        data!['Tesvikiye']['item'].toDouble(),
+                        data['Tesvikiye']['item'].toDouble(),
                         MainTheme.secondaryColor),
                     ChartDataPie(
                         'FENERBAHÇE',
@@ -98,7 +93,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   dataRevenuePie = [
                     ChartDataPie(
                         'TEŞVİKİYE',
-                        data!['Tesvikiye']['revenue'].toDouble(),
+                        data['Tesvikiye']['revenue'].toDouble(),
                         MainTheme.secondaryColor),
                     ChartDataPie(
                         'FENERBAHÇE',
@@ -109,6 +104,11 @@ class _ReportScreenState extends State<ReportScreen> {
                         data['Kozyatagi']['revenue'].toDouble(),
                         MainTheme.fourthColor),
                   ];
+                  bestSeller = {
+                    "Tesvikiye": data['Tesvikiye']['BestSeller'],
+                    "Fenerbahce": data['Fenerbahce']['BestSeller'],
+                    "Kozyatagi": data['Kozyatagi']['BestSeller']
+                  };
 
                   //In Future Builder Data Initilazations
                   return Column(
@@ -124,9 +124,9 @@ class _ReportScreenState extends State<ReportScreen> {
                         border: TableBorder.all(),
                         children: [
                           _buildTableRow('Total Number Of Items Sold',
-                              '${data!['TotalItems']}'),
+                              '${data['TotalItems']}'),
                           _buildTableRow(
-                              'Total Revenue', '${data!['TotalRevenue']}'),
+                              'Total Revenue', '${data['TotalRevenue']}'),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -162,7 +162,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               style: MainTheme
                                   .themeData.textTheme.displayMedium!
                                   .copyWith(color: MainTheme.secondaryColor)),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Table(
                             border: TableBorder.all(),
                             children: [

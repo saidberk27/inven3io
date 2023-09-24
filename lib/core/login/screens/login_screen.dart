@@ -105,12 +105,12 @@ class _FormSectionState extends State<FormSection> {
       child: Column(
         children: [
           CustomTextInput(
-            placeholder: "E - Posta",
+            placeholder: "E - Mail",
             controller: _mailController,
           ),
           const SizedBox(height: 10),
           CustomTextInput(
-            placeholder: "Şifre",
+            placeholder: "Password",
             controller: _passwordController,
             isPassword: true,
           ),
@@ -118,11 +118,7 @@ class _FormSectionState extends State<FormSection> {
           ButtonBar(
             children: [
               LoginPageButtons(
-                buttonText: "Üye Ol",
-                buttonFunction: () {},
-              ),
-              LoginPageButtons(
-                buttonText: "Giriş Yap",
+                buttonText: "Sign In",
                 buttonFunction: () async {
                   FormState formState = FormSection._formKey.currentState!;
 
@@ -228,7 +224,7 @@ Future<dynamic> signInWithEmailAndPassword(
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Kullanıcı adı veya Şifre Hatalı")),
+        const SnackBar(content: Text("Username or Password is Wrong")),
       );
     }
     return false;

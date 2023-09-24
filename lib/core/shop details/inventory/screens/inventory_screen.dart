@@ -147,13 +147,13 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Product Marked as Sold Succesfully")));
                 },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: MainTheme.secondaryColor),
                 child: Text(
                   "Sell Product",
                   style: MainTheme.themeData.textTheme.displaySmall!
                       .copyWith(color: Colors.white),
                 ),
-                style:
-                    ElevatedButton.styleFrom(primary: MainTheme.secondaryColor),
               )
             ]),
           );
@@ -188,13 +188,13 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     "currentShop": currentShop
                   });
                 },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: MainTheme.secondaryColor),
                 child: Text(
                   "Add Product",
                   style: MainTheme.themeData.textTheme.displaySmall!
                       .copyWith(color: Colors.white),
                 ),
-                style:
-                    ElevatedButton.styleFrom(primary: MainTheme.secondaryColor),
               )
             ],
           ),
@@ -204,13 +204,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
   }
 
   Future<String> barcodeScanner() async {
-    /*var res = await Navigator.push(
+    var res = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const SimpleBarcodeScannerPage(),
         ));
-*/
-    var res = "LV-WN-916";
+
     setState(() {
       barcodeData = res;
     });

@@ -26,12 +26,10 @@ class _AddProductFormState extends State<AddProductForm> {
 
     final String barcodeData = args["barcodeData"];
     final Shop shop = args["currentShop"];
-    final TextEditingController _productNameController =
-        TextEditingController();
-    final TextEditingController _productDescController =
-        TextEditingController();
-    final TextEditingController _buyPriceController = TextEditingController();
-    final TextEditingController _sellPriceController = TextEditingController();
+    final TextEditingController productNameController = TextEditingController();
+    final TextEditingController productDescController = TextEditingController();
+    final TextEditingController buyPriceController = TextEditingController();
+    final TextEditingController sellPriceController = TextEditingController();
     final InventoryViewModel vm = InventoryViewModel();
     return Scaffold(
       appBar: AppBar(title: Image.asset(imageAssetString)),
@@ -50,26 +48,26 @@ class _AddProductFormState extends State<AddProductForm> {
                 ),
                 CustomTextInput(
                     placeholder: "Product Name",
-                    controller: _productNameController),
+                    controller: productNameController),
                 const SizedBox(height: 10),
                 CustomTextInput(
                   placeholder: "Product Description",
-                  controller: _productDescController,
+                  controller: productDescController,
                 ),
                 const SizedBox(height: 10),
                 CustomTextInput(
                     placeholder: "Buy Price",
-                    controller: _buyPriceController,
+                    controller: buyPriceController,
                     isNumeric: true),
                 const SizedBox(height: 10),
                 CustomTextInput(
                     placeholder: "Sell Price",
-                    controller: _sellPriceController,
+                    controller: sellPriceController,
                     isNumeric: true),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: MainTheme.secondaryColor),
+                      backgroundColor: MainTheme.secondaryColor),
                   onPressed: () {
                     Firestore db = Firestore();
                     if (_formKey.currentState!.validate()) {
@@ -77,11 +75,11 @@ class _AddProductFormState extends State<AddProductForm> {
                     }
 
                     Product product = Product(
-                        productName: _productNameController.text,
-                        productDesc: _productDescController.text,
+                        productName: productNameController.text,
+                        productDesc: productDescController.text,
                         productBarcode: barcodeData,
-                        buyPrice: double.parse(_buyPriceController.text),
-                        sellPrice: double.parse(_sellPriceController.text));
+                        buyPrice: double.parse(buyPriceController.text),
+                        sellPrice: double.parse(sellPriceController.text));
 
                     db.addDocumentWithCustomID(
                         collectionPath: "/shops/${shop.shopID}/products",

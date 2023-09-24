@@ -67,9 +67,9 @@ class Firestore {
     QuerySnapshot querySnapshot = await collection.get();
     List<Map<String, dynamic>> data = [];
 
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       data.add(doc.data() as Map<String, dynamic>);
-    });
+    }
 
     return data;
   }
@@ -85,9 +85,9 @@ class Firestore {
 
     List<Map<String, dynamic>> data = [];
 
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       data.add(doc.data() as Map<String, dynamic>);
-    });
+    }
 
     return data;
   }

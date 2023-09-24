@@ -32,37 +32,40 @@ class ReportViewModel {
     db.addDocument(collectionPath: "reports", document: report.toJson());
   }
 
-  Future<Map<String, dynamic>> getStats() async {
+  Future<Map<String, dynamic>> getReportFields() async {
     Firestore db = Firestore();
 
     List<Map<String, dynamic>> recentReports =
         await db.readDocumentsOfCollectionByTime(collectionPath: "reports");
 
     Map<String, dynamic> recentReport = recentReports[0];
-    num TotalItemsSold = 0;
-    num TotalRevenue = 0;
-    TotalItemsSold = (recentReport["kozyatagi"]["ItemsSold"] +
+    num totalItemsSold = 0;
+    num totalRevenue = 0;
+
+    totalItemsSold = (recentReport["kozyatagi"]["ItemsSold"] +
         recentReport["fenerbahce"]["ItemsSold"] +
         recentReport["tesvikiye"]["ItemsSold"]);
-
-    TotalRevenue = (recentReport["kozyatagi"]["Revenue"] +
+    totalRevenue = (recentReport["kozyatagi"]["Revenue"] +
         recentReport["fenerbahce"]["Revenue"] +
         recentReport["tesvikiye"]["Revenue"]);
 
     Map<String, dynamic> futureDatasOfAnalytics = {
-      "TotalItems": TotalItemsSold,
-      "TotalRevenue": TotalRevenue,
+      "TotalItems": totalItemsSold,
+      "TotalRevenue": totalRevenue,
       "Fenerbahce": {
         "revenue": recentReport["fenerbahce"]["Revenue"],
-        "item": recentReport["fenerbahce"]["ItemsSold"]
+        "item": recentReport["fenerbahce"]["ItemsSold"],
+        "BestSeller": recentReport["fenerbahce"]["BestSeller"] ?? "None"
       },
       "Tesvikiye": {
         "revenue": recentReport["tesvikiye"]["Revenue"],
-        "item": recentReport["tesvikiye"]["ItemsSold"]
+        "item": recentReport["tesvikiye"]["ItemsSold"],
+        "BestSeller": recentReport["tesvikiye"]["BestSeller"] ?? "None"
       },
       "Kozyatagi": {
         "revenue": recentReport["kozyatagi"]["Revenue"],
-        "item": recentReport["kozyatagi"]["ItemsSold"]
+        "item": recentReport["kozyatagi"]["ItemsSold"],
+        "BestSeller": recentReport["kozyatagi"]["BestSeller"] ?? "None"
       }
     };
 

@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_generator.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_screen.dart';
-import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_screen_demo.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -22,7 +19,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Scaffold(
       appBar: AppBar(title: Image.asset(imageAssetString)),
       floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () async {
             showDialog(
               context: context,
@@ -32,8 +29,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 // You can use a CircularProgressIndicator or any other widget here
                 return Dialog(
                   child: Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CircularProgressIndicator(), // Replace with your loading indicator
@@ -49,13 +46,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             ReportGenerator().generateReport().then((report) {
               // TODO bu value'yi fireabse'ye at. September raporu için firebase'den verileri al. Bestselleri eklemeyi unutma.
 
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text(
                       "Report Succesfully Generated and Updated. Check Current Month's Report From  Analytics Screen")));
               Navigator.of(context).pop();
             });
           },
-          label: Text("Generate Report")),
+          label: const Text("Generate Report")),
       body: Padding(
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 64),

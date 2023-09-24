@@ -10,23 +10,27 @@ class ReportGenerator {
     Map<String, List<QueryDocumentSnapshot<Map<String, dynamic>>>>
         documentsOfMonth = await fetchDocumentsInMonth(month: currentMonth);
 
+    print(await getBestSeller(shopName: 'Fenerbahce'));
     Report report = Report(
         month: currentMonth,
         timeStamp: Timestamp.fromDate(DateTime.now()),
         tesvikiye: {
           "Revenue": getTotalNumberOfRevenues(
               documents: documentsOfMonth['Tesvikiye']!),
-          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Tesvikiye")
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Tesvikiye"),
+          "BestSeller": await getBestSeller(shopName: 'Tesvikiye'),
         },
         fenerbahce: {
           "Revenue": getTotalNumberOfRevenues(
               documents: documentsOfMonth['Fenerbahce']!),
-          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Fenerbahce")
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Fenerbahce"),
+          "BestSeller": await getBestSeller(shopName: 'Fenerbahce'),
         },
         kozyatagi: {
           "Revenue": getTotalNumberOfRevenues(
               documents: documentsOfMonth['Kozyatagi']!),
-          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Kozyatagi")
+          "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Kozyatagi"),
+          "BestSeller": await getBestSeller(shopName: 'Kozyatagi')
         });
 
     vm.sendReportToDatabase(
@@ -88,6 +92,32 @@ class ReportGenerator {
     final productQuantityMap =
         getProductQuantityMap(documents: documentsOfMonth[shopName]!);
     return getTotalNumberOfSells(productQuantityMap: productQuantityMap);
+  }
+
+  Future<String> getBestSeller({required String shopName}) async {
+    Map<String, List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+        documentsOfMonth =
+        await fetchDocumentsInMonth(month: detectCurrentMonth());
+
+    final productQuantityMap =
+        getProductQuantityMap(documents: documentsOfMonth[shopName]!);
+    return findBestSeller(productQuantityMap);
+  }
+
+  String findBestSeller(
+    Map<String, dynamic> map,
+  ) {
+    String largestKey = "None";
+    int largestValue = -1; // Initialize with a minimum value
+
+    map.forEach((key, value) {
+      if (value > largestValue) {
+        largestValue = value;
+        largestKey = key;
+      }
+    });
+
+    return largestKey;
   }
 
   Map<String, dynamic> getProductQuantityMap(

@@ -109,8 +109,8 @@ class _ReportScreenDemoState extends State<ReportScreenDemo> {
                   border: TableBorder.all(),
                   children: [
                     _buildTableRow(
-                        'Total Number Of Items Sold', '${totalItemsSold}'),
-                    _buildTableRow('Total Revenue', '${totalRevenue}'),
+                        'Total Number Of Items Sold', '$totalItemsSold'),
+                    _buildTableRow('Total Revenue', '$totalRevenue'),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -143,7 +143,7 @@ class _ReportScreenDemoState extends State<ReportScreenDemo> {
                     Text("Reccomended Product",
                         style: MainTheme.themeData.textTheme.displayMedium!
                             .copyWith(color: MainTheme.secondaryColor)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Table(
                       border: TableBorder.all(),
                       children: [
