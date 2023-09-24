@@ -43,4 +43,26 @@ class DemoData {
       "bestSeller": "ColorBox Yağlı Boya Başlangıç Seti 3"
     },
   };
+
+  Map<String, Map<String, dynamic>> zero = {
+    "total": {"items": 0, "revenue": 0},
+    "Tesvikiye": {
+      "shopName": "Tesvikiye",
+      "shopRevenue": 0,
+      "shopSold": 0,
+      "bestSeller": ""
+    },
+    "Fenerbahce": {
+      "shopName": "Fenerbahce",
+      "shopRevenue": 0,
+      "shopSold": 0,
+      "bestSeller": ""
+    },
+    "Kozyatagi": {
+      "shopName": "Kozyatagi",
+      "shopRevenue": 0,
+      "shopSold": 0,
+      "bestSeller": ""
+    },
+  };
 }

@@ -39,12 +39,35 @@ class Firestore {
     }
   }
 
-  Future<List<Map<String, dynamic>>> readDocumentsOfCollection(
+  Future<Map<String, dynamic>> readDocumentsWithLatestTimestamp(
       {required String collectionPath}) async {
+    try {
+      CollectionReference collectionRef =
+          FirebaseFirestore.instance.collection(collectionPath);
+
+      QuerySnapshot querySnapshot =
+          await collectionRef.orderBy("timeStamp", descending: true).get();
+
+      List<Map<String, dynamic>> documentsData = querySnapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>;
+      }).toList();
+
+      return documentsData[0]; // lastReport
+    } catch (error) {
+      print('Error reading documents with latest timestamp: $error');
+      return {};
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> readDocumentsOfCollection({
+    required String collectionPath,
+  }) async {
     CollectionReference collection =
         FirebaseFirestore.instance.collection(collectionPath);
 
-    QuerySnapshot querySnapshot = await collection.get();
+    QuerySnapshot querySnapshot =
+        await collection.orderBy('timeStamp', descending: true).get();
+
     List<Map<String, dynamic>> data = [];
 
     querySnapshot.docs.forEach((doc) {

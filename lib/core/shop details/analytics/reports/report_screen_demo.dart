@@ -4,15 +4,15 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../config/themes/main_theme.dart';
 
-class ReportScreen extends StatefulWidget {
+class ReportScreenDemo extends StatefulWidget {
   late String month;
-  ReportScreen({super.key, required this.month});
+  ReportScreenDemo({super.key, required this.month});
 
   @override
-  State<ReportScreen> createState() => _ReportScreenState();
+  State<ReportScreenDemo> createState() => _ReportScreenDemoState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
+class _ReportScreenDemoState extends State<ReportScreenDemo> {
   late List<ChartDataGeneral> dataItemsSold;
   late List<ChartDataGeneral> dataRevenue;
 
@@ -30,12 +30,52 @@ class _ReportScreenState extends State<ReportScreen> {
   void initState() {
     super.initState();
     reportViewModel = ReportViewModel();
-
     Map<String, dynamic> monthData =
         reportViewModel.getDataOfMonth(month: widget.month);
-
+    print(monthData);
     totalItemsSold = monthData['total']['items'].toDouble();
     totalRevenue = monthData['total']['revenue'].toDouble();
+    dataItemsSold = [
+      ChartDataGeneral(
+          'TEŞVİKİYE', monthData['Tesvikiye']['shopSold'].toDouble()),
+      ChartDataGeneral(
+          'FENERBAHÇE', monthData['Fenerbahce']['shopSold'].toDouble()),
+      ChartDataGeneral(
+          'KOZYATAĞI', monthData['Kozyatagi']['shopSold'].toDouble()),
+    ];
+
+    dataRevenue = [
+      ChartDataGeneral(
+          'TEŞVİKİYE', monthData['Tesvikiye']['shopRevenue'].toDouble()),
+      ChartDataGeneral(
+          'FENERBAHÇE', monthData['Fenerbahce']['shopRevenue'].toDouble()),
+      ChartDataGeneral(
+          'KOZYATAĞI', monthData['Kozyatagi']['shopRevenue'].toDouble()),
+    ];
+
+    dataItemsSoldPie = [
+      ChartDataPie('TEŞVİKİYE', monthData['Tesvikiye']['shopSold'].toDouble(),
+          MainTheme.secondaryColor),
+      ChartDataPie('FENERBAHÇE', monthData['Fenerbahce']['shopSold'].toDouble(),
+          MainTheme.fifthColor),
+      ChartDataPie('KOZYATAĞI', monthData['Kozyatagi']['shopSold'].toDouble(),
+          MainTheme.fourthColor),
+    ];
+
+    dataRevenuePie = [
+      ChartDataPie(
+          'TEŞVİKİYE',
+          monthData['Tesvikiye']['shopRevenue'].toDouble(),
+          MainTheme.secondaryColor),
+      ChartDataPie(
+          'FENERBAHÇE',
+          monthData['Fenerbahce']['shopRevenue'].toDouble(),
+          MainTheme.fifthColor),
+      ChartDataPie(
+          'KOZYATAĞI',
+          monthData['Kozyatagi']['shopRevenue'].toDouble(),
+          MainTheme.fourthColor),
+    ];
 
     bestSeller = {
       "Tesvikiye": monthData['Tesvikiye']['bestSeller'],
@@ -56,134 +96,65 @@ class _ReportScreenState extends State<ReportScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-            child: FutureBuilder(
-              future: reportViewModel.getStats(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  Map<String, dynamic>? data = snapshot.data;
-                  // In Future Builder Data Initilazations
-                  dataItemsSold = [
-                    ChartDataGeneral(
-                        'TEŞVİKİYE', data!['Tesvikiye']['item'].toDouble()),
-                    ChartDataGeneral(
-                        'FENERBAHÇE', data['Fenerbahce']['item'].toDouble()),
-                    ChartDataGeneral(
-                        'KOZYATAĞI', data['Kozyatagi']['item'].toDouble()),
-                  ];
-
-                  dataRevenue = [
-                    ChartDataGeneral(
-                        'TEŞVİKİYE', data!['Tesvikiye']['revenue'].toDouble()),
-                    ChartDataGeneral(
-                        'FENERBAHÇE', data['Fenerbahce']['revenue'].toDouble()),
-                    ChartDataGeneral(
-                        'KOZYATAĞI', data['Kozyatagi']['revenue'].toDouble()),
-                  ];
-
-                  dataItemsSoldPie = [
-                    ChartDataPie(
-                        'TEŞVİKİYE',
-                        data!['Tesvikiye']['item'].toDouble(),
-                        MainTheme.secondaryColor),
-                    ChartDataPie(
-                        'FENERBAHÇE',
-                        data['Fenerbahce']['item'].toDouble(),
-                        MainTheme.fifthColor),
-                    ChartDataPie(
-                        'KOZYATAĞI',
-                        data['Kozyatagi']['item'].toDouble(),
-                        MainTheme.fourthColor),
-                  ];
-
-                  dataRevenuePie = [
-                    ChartDataPie(
-                        'TEŞVİKİYE',
-                        data!['Tesvikiye']['revenue'].toDouble(),
-                        MainTheme.secondaryColor),
-                    ChartDataPie(
-                        'FENERBAHÇE',
-                        data['Fenerbahce']['revenue'].toDouble(),
-                        MainTheme.fifthColor),
-                    ChartDataPie(
-                        'KOZYATAĞI',
-                        data['Kozyatagi']['revenue'].toDouble(),
-                        MainTheme.fourthColor),
-                  ];
-
-                  //In Future Builder Data Initilazations
-                  return Column(
-                    children: [
-                      Text(
-                        "2023 ${widget.month} Report",
-                        textAlign: TextAlign.center,
-                        style: MainTheme.themeData.textTheme.displayLarge!
-                            .copyWith(color: MainTheme.secondaryColor),
-                      ),
-                      const SizedBox(height: 20),
-                      Table(
-                        border: TableBorder.all(),
-                        children: [
-                          _buildTableRow('Total Number Of Items Sold',
-                              '${data!['TotalItems']}'),
-                          _buildTableRow(
-                              'Total Revenue', '${data!['TotalRevenue']}'),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      ColumnChart(
-                        tooltip: _tooltip,
-                        dataItemsSold: dataItemsSold,
-                        dataRevenue: dataRevenue,
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          Text("Products Sold",
-                              style: MainTheme
-                                  .themeData.textTheme.displayMedium!
-                                  .copyWith(color: MainTheme.secondaryColor)),
-                          PieChart(dataMap: dataItemsSoldPie),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          Text("Products Revenue",
-                              style: MainTheme
-                                  .themeData.textTheme.displayMedium!
-                                  .copyWith(color: MainTheme.secondaryColor)),
-                          PieChart(dataMap: dataRevenuePie, isDoughnut: true),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          Text("Reccomended Product",
-                              style: MainTheme
-                                  .themeData.textTheme.displayMedium!
-                                  .copyWith(color: MainTheme.secondaryColor)),
-                          SizedBox(height: 10),
-                          Table(
-                            border: TableBorder.all(),
-                            children: [
-                              _buildTableRow(
-                                  'Teşvikiye', bestSeller['Tesvikiye']!),
-                              _buildTableRow(
-                                  'Fenerbahçe', bestSeller['Fenerbahce']!),
-                              _buildTableRow(
-                                  'Kozyatağı', bestSeller['Kozyatagi']!)
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  );
-                } else {
-                  return Center(
-                      child: CircularProgressIndicator(
-                          color: MainTheme.secondaryColor));
-                }
-              },
+            child: Column(
+              children: [
+                Text(
+                  "2023 ${widget.month} Report",
+                  textAlign: TextAlign.center,
+                  style: MainTheme.themeData.textTheme.displayLarge!
+                      .copyWith(color: MainTheme.secondaryColor),
+                ),
+                const SizedBox(height: 20),
+                Table(
+                  border: TableBorder.all(),
+                  children: [
+                    _buildTableRow(
+                        'Total Number Of Items Sold', '${totalItemsSold}'),
+                    _buildTableRow('Total Revenue', '${totalRevenue}'),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ColumnChart(
+                  tooltip: _tooltip,
+                  dataItemsSold: dataItemsSold,
+                  dataRevenue: dataRevenue,
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    Text("Products Sold",
+                        style: MainTheme.themeData.textTheme.displayMedium!
+                            .copyWith(color: MainTheme.secondaryColor)),
+                    PieChart(dataMap: dataItemsSoldPie),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    Text("Products Revenue",
+                        style: MainTheme.themeData.textTheme.displayMedium!
+                            .copyWith(color: MainTheme.secondaryColor)),
+                    PieChart(dataMap: dataRevenuePie, isDoughnut: true),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    Text("Reccomended Product",
+                        style: MainTheme.themeData.textTheme.displayMedium!
+                            .copyWith(color: MainTheme.secondaryColor)),
+                    SizedBox(height: 10),
+                    Table(
+                      border: TableBorder.all(),
+                      children: [
+                        _buildTableRow('Teşvikiye', bestSeller['Tesvikiye']!),
+                        _buildTableRow('Fenerbahçe', bestSeller['Fenerbahce']!),
+                        _buildTableRow('Kozyatağı', bestSeller['Kozyatagi']!)
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ));

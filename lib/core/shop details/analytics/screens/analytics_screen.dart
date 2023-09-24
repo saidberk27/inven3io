@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_generator.dart';
-import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
 import 'package:inven3io/core/shop%20details/analytics/reports/report_screen.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_screen_demo.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
@@ -15,7 +16,7 @@ class AnalyticsScreen extends StatefulWidget {
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   final String imageAssetString = 'assets/images/logowhite.png';
-  ReportViewModel vm = ReportViewModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +49,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             ReportGenerator().generateReport().then((report) {
               // TODO bu value'yi fireabse'ye at. September raporu için firebase'den verileri al. Bestselleri eklemeyi unutma.
 
-              vm.sendReportToDatabase(report: report);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       "Report Succesfully Generated and Updated. Check Current Month's Report From  Analytics Screen")));
@@ -71,7 +71,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 children: [
                   CardExample(text: "July"),
                   CardExample(text: "August"),
-                  CardExample(text: "September"),
+                  CardExample(text: "September", isDemo: false),
+                  CardExample(text: "October"),
+                  CardExample(text: "November"),
+                  CardExample(text: "December"),
                 ],
               ),
             ),
@@ -84,7 +87,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
 class CardExample extends StatelessWidget {
   late String text;
-  CardExample({super.key, required this.text});
+  bool isDemo;
+  CardExample({
+    super.key,
+    required this.text,
+    this.isDemo = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +102,17 @@ class CardExample extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ReportScreen(month: text)));
+            if (isDemo) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReportScreenDemo(month: text)));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReportScreen(month: text)));
+            }
           },
           child: SizedBox(
             width: MediaQuery.of(context).size.width / 3,

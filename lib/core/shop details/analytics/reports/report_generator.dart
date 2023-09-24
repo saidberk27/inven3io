@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inven3io/core/shop%20details/analytics/reports/report_vm.dart';
 
 import 'Report.dart';
 
 class ReportGenerator {
   Future<Report> generateReport() async {
+    ReportViewModel vm = ReportViewModel();
     int currentMonth = detectCurrentMonth();
     Map<String, List<QueryDocumentSnapshot<Map<String, dynamic>>>>
         documentsOfMonth = await fetchDocumentsInMonth(month: currentMonth);
@@ -27,6 +29,8 @@ class ReportGenerator {
           "ItemsSold": await getTotalNumberOfItemsSold(shopName: "Kozyatagi")
         });
 
+    vm.sendReportToDatabase(
+        report: report, currentMonth: currentMonth.toString());
     return report;
   }
 
