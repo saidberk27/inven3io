@@ -29,4 +29,28 @@ class Authentication {
       return e.toString();
     }
   }
+
+  Future<dynamic> createUserWithEmailAndPassword() async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint("Kullanıcı");
+        return 'Kullanıcı Bulunamadı';
+      } else if (e.code == 'wrong-password') {
+        return 'Yanlış Şifre';
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      return e.toString();
+    }
+  }
 }

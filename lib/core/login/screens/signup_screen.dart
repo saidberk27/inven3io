@@ -1,55 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:inven3io/config/themes/main_theme.dart';
-import 'package:inven3io/core/login/models/user.dart';
-import 'package:inven3io/data/authentication.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../config/themes/main_theme.dart';
+import '../../../data/authentication.dart';
 import '../../../widgets/custom_text_input.dart';
 import '../../../widgets/title_semi_round.dart';
+import '../models/user.dart';
 
-void main() => runApp(const LoginScreen());
-
-/// Stateful widget to fetch and then display video content.
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final String imageAssetString = 'assets/images/logo.png';
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class _SignUpScreenState extends State<SignUpScreen> {
+  final String imageAssetString = 'assets/images/logowhite.png';
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(title: Image.asset(imageAssetString)),
       body: SafeArea(
-        child: Center(
-          child: Stack(children: [
-            LogoAndFormSection(
-                screenHeight: screenHeight, imageAssetString: imageAssetString),
-            TitleSemiRound(
-                title: "LOG IN TO\nCONTINUE",
-                screenWidth: screenWidth,
-                screenHeight: screenHeight),
-          ]),
-        ),
-      ),
+          child: Center(
+        child: Stack(children: [
+          LogoAndFormSection(
+              screenHeight: screenHeight, imageAssetString: imageAssetString),
+        ]),
+      )),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
 
@@ -117,13 +98,7 @@ class _FormSectionState extends State<FormSection> {
           ButtonBar(
             children: [
               LoginPageButtons(
-                buttonText: "Sign Up",
-                buttonFunction: () {
-                  Navigator.pushNamed(context, "/signUp");
-                },
-              ),
-              LoginPageButtons(
-                buttonText: "Sign In",
+                buttonText: "Create User",
                 buttonFunction: () async {
                   FormState formState = FormSection._formKey.currentState!;
 
@@ -133,13 +108,17 @@ class _FormSectionState extends State<FormSection> {
 
                     try {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("You are signing in..."),
+                          content: Text("User is being created..."),
                           duration: Duration(milliseconds: 1500)));
-                      if (await signInWithEmailAndPassword(
+                      if (await createUserWithEmailAndPassword(
                           emailAddress: emailAddress,
                           password: password,
                           context: context)) {
-                        Navigator.pushReplacementNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/login');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("User succesfully created!"),
+                                duration: Duration(milliseconds: 750)));
                       }
                     } on Exception catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -183,7 +162,7 @@ class LoginPageButtons extends StatelessWidget {
   }
 }
 
-Future<dynamic> signInWithEmailAndPassword(
+Future<dynamic> createUserWithEmailAndPassword(
     {required String emailAddress,
     required String password,
     required BuildContext context}) async {
@@ -193,7 +172,7 @@ Future<dynamic> signInWithEmailAndPassword(
     Authentication authentication =
         Authentication(emailAddress: emailAddress, password: password);
 
-    dynamic result = await authentication.signInWithEmailAndPassword();
+    dynamic result = await authentication.createUserWithEmailAndPassword();
 
     if (result != null) {
       if (result is String) {

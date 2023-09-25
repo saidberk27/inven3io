@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inven3io/config/themes/main_theme.dart';
 
+import '../../../widgets/title_semi_round.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       MainContainer(
                           screenHeight: screenHeight, screenWidth: screenWidth),
                       TitleSemiRound(
+                        title:"SELECT\nCOLORBOX\nSTORE",
                           screenWidth: screenWidth, screenHeight: screenHeight),
                     ],
                   ))
@@ -54,7 +57,7 @@ class MainContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: screenHeight / 1.6,
+        height: screenHeight / 1.5,
         width: screenWidth,
         color: MainTheme.secondaryColor,
         child: Column(
@@ -145,64 +148,5 @@ class ShopSection extends StatelessWidget {
   }
 }
 
-class TitleSemiRound extends StatelessWidget {
-  final String title = "SELECT\nCOLORBOX\nSTORE";
-  const TitleSemiRound({
-    super.key,
-    required this.screenWidth,
-    required this.screenHeight,
-  });
 
-  final double screenWidth;
-  final double screenHeight;
-  final int angle = 180;
-  @override
-  Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: angle * (3.14159265359 / 180),
-      child: ClipPath(
-        clipper: CustomClip(),
-        child: Container(
-          width: screenWidth,
-          height: screenHeight / 4.5,
-          color: MainTheme.fourthColor,
-          child: Transform.rotate(
-              angle: angle * (3.14159265359 / 180),
-              child: Center(
-                  child: Text(
-                title,
-                style: MainTheme.themeData.textTheme.displayLarge!
-                    .copyWith(color: MainTheme.thirdColor, fontSize: 30),
-                textAlign: TextAlign.center,
-              ))),
-        ),
-      ),
-    );
-  }
-}
 
-class CustomClip extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    double radius = 200;
-
-    Path path = Path();
-    path
-      ..moveTo(size.width / 2, 0)
-      ..arcToPoint(Offset(size.width, size.height),
-          radius: Radius.circular(radius))
-      ..lineTo(0, size.height)
-      ..arcToPoint(
-        Offset(size.width / 2, 0),
-        radius: Radius.circular(radius),
-      )
-      ..close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
-  }
-}

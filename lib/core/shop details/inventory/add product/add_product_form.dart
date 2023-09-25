@@ -47,20 +47,24 @@ class _AddProductFormState extends State<AddProductForm> {
                   textAlign: TextAlign.center,
                 ),
                 CustomTextInput(
+                  inputIcon: Icons.abc,
                     placeholder: "Product Name",
                     controller: productNameController),
                 const SizedBox(height: 10),
-                CustomTextInput(
+                CustomTextInput(                  
+                  inputIcon: Icons.abc,
                   placeholder: "Product Description",
                   controller: productDescController,
                 ),
                 const SizedBox(height: 10),
                 CustomTextInput(
+                    inputIcon: Icons.attach_money,
                     placeholder: "Buy Price",
                     controller: buyPriceController,
                     isNumeric: true),
                 const SizedBox(height: 10),
                 CustomTextInput(
+                    inputIcon: Icons.attach_money,
                     placeholder: "Sell Price",
                     controller: sellPriceController,
                     isNumeric: true),
@@ -73,7 +77,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                     }
-
+                    
                     Product product = Product(
                         productName: productNameController.text,
                         productDesc: productDescController.text,
